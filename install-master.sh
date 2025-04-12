@@ -548,7 +548,7 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     "spacing": 5,
     "modules-left": ["hyprland/workspaces", "custom/separator", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "custom/separator", "network", "bluetooth", "battery", "custom/separator", "custom/notification", "tray"],
+    "modules-right": ["custom/cpu", "custom/memory", "custom/disk", "custom/separator", "pulseaudio", "custom/separator", "network", "bluetooth", "battery", "custom/separator", "custom/notification", "tray"],
     
     "hyprland/workspaces": {
         "format": "{icon}",
@@ -671,6 +671,27 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     "tray": {
         "icon-size": 18,
         "spacing": 8
+    },
+
+    "custom/cpu": {
+        "exec": "top -bn1 | grep 'Cpu(s)' | awk '{print int($2 + $4)}' | tr -d '\n'",
+        "format": " {}%",
+        "interval": 2,
+        "tooltip": false
+    },
+
+    "custom/memory": {
+        "exec": "free -m | grep Mem | awk '{printf \"%.1f\", ($3/$2)*100}'",
+        "format": " {}%",
+        "interval": 2,
+        "tooltip": false
+    },
+
+    "custom/disk": {
+        "exec": "df -h / | awk '/\\/$/ {print $5}' | tr -d '%'",
+        "format": "󰋊 {}%",
+        "interval": 30,
+        "tooltip": false
     }
 }
 EOCONFIG
@@ -823,6 +844,27 @@ tooltip {
 
 tooltip label {
     color: #cdd6f4;
+}
+
+#custom-cpu,
+#custom-memory,
+#custom-disk {
+    background: #1e1e2e;
+    padding: 0 10px;
+    margin: 5px 0;
+    border-radius: 15px;
+}
+
+#custom-cpu {
+    color: #f38ba8;
+}
+
+#custom-memory {
+    color: #fab387;
+}
+
+#custom-disk {
+    color: #a6e3a1;
 }
 EOCONFIG
 
