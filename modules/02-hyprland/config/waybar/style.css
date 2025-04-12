@@ -1,0 +1,168 @@
+* {
+    border: none;
+    border-radius: 0;
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Inter";
+    font-size: 13px;
+    min-height: 0;
+}
+
+window#waybar {
+    background: rgba(30, 30, 46, 0.85);
+    border-radius: 15px;
+    color: #cdd6f4;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#workspaces {
+    background: #1e1e2e;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 0 5px;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    min-width: 20px;
+    color: #cdd6f4;
+}
+
+#workspaces button.active {
+    color: #89b4fa;
+    border-radius: 15px;
+    background: #313244;
+}
+
+#workspaces button:hover {
+    background: #313244;
+    border-radius: 15px;
+    color: #cdd6f4;
+}
+
+#custom-separator {
+    color: #313244;
+    margin: 0 5px;
+    font-size: 18px;
+}
+
+#window {
+    margin: 0 4px;
+    border-radius: 15px;
+    color: #cdd6f4;
+}
+
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#bluetooth,
+#custom-notification {
+    background: #1e1e2e;
+    padding: 0 10px;
+    margin: 5px 0;
+    border-radius: 15px;
+    color: #cdd6f4;
+}
+
+#clock {
+    color: #89b4fa;
+}
+
+#battery {
+    color: #a6e3a1;
+}
+
+#battery.charging, #battery.plugged {
+    color: #89b4fa;
+}
+
+#battery.critical:not(.charging) {
+    color: #f38ba8;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #f38ba8;
+        color: #1e1e2e;
+    }
+}
+
+#pulseaudio {
+    color: #fab387;
+}
+
+#pulseaudio.muted {
+    color: #f38ba8;
+}
+
+#network {
+    color: #94e2d5;
+}
+
+#network.disconnected {
+    color: #f38ba8;
+}
+
+#bluetooth {
+    color: #89b4fa;
+}
+
+#bluetooth.disabled {
+    color: #6c7086;
+}
+
+#tray {
+    background: #1e1e2e;
+    margin: 5px 0;
+    border-radius: 15px;
+    padding: 0 10px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #f38ba8;
+}
+
+tooltip {
+    background: rgba(30, 30, 46, 0.95);
+    border: 1px solid rgba(137, 180, 250, 0.3);
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: #cdd6f4;
+}
+
+#custom-cpu,
+#custom-memory,
+#custom-disk {
+    background: #1e1e2e;
+    padding: 0 10px;
+    margin: 5px 0;
+    border-radius: 15px;
+}
+
+#custom-cpu {
+    color: #f38ba8;
+}
+
+#custom-memory {
+    color: #fab387;
+}
+
+#custom-disk {
+    color: #a6e3a1;
+} 
