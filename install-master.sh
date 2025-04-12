@@ -98,7 +98,7 @@ install_packages "Terminal and file manager" "ghostty dolphin"
 install_packages "Text editors" "neovim kate"
 install_packages "Document viewer" "okular"
 install_packages "Waybar and application launcher" "waybar wofi"
-install_packages "Font Awesome (for icons)" "ttf-font-awesome inter-font ttf-nerd-fonts-symbols"
+install_packages "Font Awesome (for icons)" "ttf-font-awesome inter-font ttf-nerd-fonts-symbols qt5ct qt5-wayland qt6-wayland"
 install_packages "Screenshot and clipboard utilities" "grim slurp wl-clipboard libnotify"
 install_packages "Color picker" "hyprpicker"
 install_packages "Wallpaper, idle, and key event test" "hyprpaper wev"
@@ -161,6 +161,17 @@ env = HYPRCURSOR_SIZE,24
 env = GTK_THEME,Adwaita:dark
 env = XCURSOR_THEME,Adwaita
 env = GTK_FONT_NAME,Inter 10
+env = WINIT_X11_SCALE_FACTOR,1
+env = GDK_SCALE,1
+env = QT_QPA_PLATFORM,wayland
+env = QT_QPA_PLATFORMTHEME,qt5ct
+env = QT_FONT_DPI,96
+
+# XWayland settings
+xwayland {
+    use_nearest_neighbor = false
+    force_zero_scaling = true
+}
 
 #####################
 ### LOOK AND FEEL ###
@@ -191,12 +202,10 @@ decoration {
         vibrancy = 0.1696
     }
 
-    # Shadow configuration
-    drop_shadow = true
-    shadow_ignore_window = false
-    shadow_offset = 2 2
-    shadow_scale = 2.0
+    drop_shadow = yes
     shadow_range = 4
+    shadow_render_power = 3
+    col.shadow = rgba(1a1a1aee)
 }
 
 animations {
@@ -335,9 +344,10 @@ misc {
     swallow_regex = ^(ghostty)$
 }
 
-# Window rules for fonts
+# Window rules for fonts and scaling
 windowrulev2 = font-family:Inter,class:.*
-EOCONFIG
+windowrulev2 = xwayland:1,class:.*
+windowrulev2 = rounding:0,class:^(xwayland.*)$
 
 # Create Hyprlock config
 echo "🔒 Creating Hyprlock configuration..."
