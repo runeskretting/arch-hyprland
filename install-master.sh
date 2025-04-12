@@ -179,10 +179,10 @@ general {
 
 decoration {
     rounding = 10
-    rounding_power = 2
+    
     active_opacity = 1.0
     inactive_opacity = 1.0
-
+    
     blur {
         enabled = true
         size = 3
@@ -191,37 +191,56 @@ decoration {
         vibrancy = 0.1696
     }
 
-    drop_shadow = yes
+    # Shadow configuration
+    drop_shadow = true
+    shadow_ignore_window = false
+    shadow_offset = 2 2
+    shadow_scale = 2.0
     shadow_range = 4
-    shadow_render_power = 3
-    col.shadow = rgba(1a1a1aee)
 }
 
-# Set the font for window titles
-xwayland {
-    force_zero_scaling = true
+animations {
+    enabled = true
+    
+    bezier = easeOutQuint,0.23,1,0.32,1
+    bezier = easeInOutCubic,0.65,0.05,0.36,1
+    bezier = linear,0,0,1,1
+    
+    animation = windows, 1, 3, easeInOutCubic, slide
+    animation = border, 1, 10, default
+    animation = fade, 1, 3, easeInOutCubic
+    animation = workspaces, 1, 3, easeInOutCubic, slide
 }
 
-# Font configuration
-misc {
-    force_default_wallpaper = -1
-    disable_hyprland_logo = false
-    force_hypr_chan = false
-    force_default_font = false
-    mouse_move_enables_dpms = true
-    key_press_enables_dpms = true
-    animate_manual_resizes = true
-    animate_mouse_windowdragging = true
-    enable_swallow = true
-    swallow_regex = ^(ghostty)$
+#############
+### INPUT ###
+#############
+
+input {
+    kb_layout = no
+    kb_variant =
+    kb_model =
+    kb_options =
+    kb_rules =
+    numlock_by_default = true
+
+    follow_mouse = 1
+    sensitivity = 0
+
+    touchpad {
+        natural_scroll = false
+        disable_while_typing = true
+        tap-to-click = true
+    }
 }
 
-# Window rules for fonts
-windowrulev2 = font-family:Inter,class:.*
+gestures {
+    workspace_swipe = false
+}
 
-#############################
+###################
 ### KEYBINDINGS ###
-#############################
+###################
 
 $mainMod = SUPER
 
@@ -296,15 +315,28 @@ bindl = , XF86AudioPause, exec, playerctl play-pause
 bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
 
-##############################
-### WINDOWS AND WORKSPACES ###
-##############################
+# Window rules
+windowrulev2 = float,class:^(pavucontrol)$
+windowrulev2 = float,class:^(nm-connection-editor)$
+windowrulev2 = float,class:^(blueman-manager)$
+windowrulev2 = float,title:^(btop)$
+windowrulev2 = float,title:^(htop)$
 
-# Ignore maximize requests from apps
-windowrule = suppressevent maximize, class:.*
+# Font configuration
+misc {
+    force_default_wallpaper = -1
+    disable_hyprland_logo = false
+    force_default_font = false
+    mouse_move_enables_dpms = true
+    key_press_enables_dpms = true
+    animate_manual_resizes = true
+    animate_mouse_windowdragging = true
+    enable_swallow = true
+    swallow_regex = ^(ghostty)$
+}
 
-# Fix some dragging issues with XWayland
-windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+# Window rules for fonts
+windowrulev2 = font-family:Inter,class:.*
 EOCONFIG
 
 # Create Hyprlock config
