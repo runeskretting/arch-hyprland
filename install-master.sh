@@ -98,7 +98,7 @@ install_packages "Terminal and file manager" "ghostty dolphin"
 install_packages "Text editors" "neovim kate"
 install_packages "Document viewer" "okular"
 install_packages "Waybar and application launcher" "waybar wofi"
-install_packages "Font Awesome (for icons)" "ttf-font-awesome"
+install_packages "Font Awesome (for icons)" "ttf-font-awesome inter-font"
 install_packages "Screenshot and clipboard utilities" "grim slurp wl-clipboard libnotify"
 install_packages "Color picker" "hyprpicker"
 install_packages "Wallpaper, idle, and key event test" "hyprpaper wev"
@@ -684,7 +684,7 @@ EOCONFIG
 cat > ~/.config/swaync/style.css << 'EOCONFIG'
 * {
   all: unset;
-  font-family: "Noto Sans", "Font Awesome 6 Free";
+  font-family: "Roboto", "Inter", "Font Awesome 6 Free";
   font-size: 14px;
 }
 
@@ -755,7 +755,7 @@ echo "🚀 Starting Development Environment Setup..."
 install_packages "Productivity applications" "obsidian"
 
 # Install development tools (Node.js)
-install_packages "Node.js" "nodejs-lts-hydrogen npm"
+install_packages "Node.js" "nodejs-lts-jod npm"
 
 # Setup LazyVim (NeoVim configuration)
 echo "📝 Setting up LazyVim for NeoVim..."
