@@ -26,7 +26,7 @@ The setup is organized into several modules:
 
 1. Download the master installation script:
    ```bash
-   curl -O https://your-hosting-url/install-master.sh
+   curl -O https://github.com/runeskretting/install-master.sh
    ```
 
 2. Make it executable:
