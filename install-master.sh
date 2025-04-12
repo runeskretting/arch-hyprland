@@ -541,30 +541,68 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
 {
     "layer": "top",
     "position": "top",
-    "height": 30,
-    "spacing": 4,
-    "modules-left": ["hyprland/workspaces", "hyprland/window"],
+    "height": 35,
+    "margin-top": 6,
+    "margin-left": 10,
+    "margin-right": 10,
+    "spacing": 5,
+    "modules-left": ["hyprland/workspaces", "custom/separator", "hyprland/window"],
     "modules-center": ["clock"],
-    "modules-right": ["pulseaudio", "network", "bluetooth", "battery", "custom/notification", "tray"],
+    "modules-right": ["pulseaudio", "custom/separator", "network", "bluetooth", "battery", "custom/separator", "custom/notification", "tray"],
     
     "hyprland/workspaces": {
-        "format": "{name}",
+        "format": "{icon}",
+        "format-icons": {
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "urgent": "",
+            "active": "",
+            "default": ""
+        },
         "on-click": "activate",
-        "sort-by-number": true
+        "sort-by-number": true,
+        "on-scroll-up": "hyprctl dispatch workspace e+1",
+        "on-scroll-down": "hyprctl dispatch workspace e-1"
+    },
+
+    "custom/separator": {
+        "format": "|",
+        "interval": "once",
+        "tooltip": false
     },
     
     "hyprland/window": {
-        "max-length": 50
+        "format": "{}",
+        "max-length": 50,
+        "separate-outputs": true
     },
     
     "clock": {
-        "format": "{:%H:%M %Y-%m-%d}",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt>{calendar}</tt>"
+        "format": "{:%H:%M}",
+        "format-alt": "{:%Y-%m-%d}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode"          : "year",
+            "mode-mon-col"  : 3,
+            "weeks-pos"     : "right",
+            "on-scroll"     : 1,
+            "on-click-right": "mode",
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+            }
+        }
     },
     
     "pulseaudio": {
-        "format": "{volume}% {icon}",
-        "format-bluetooth": "{volume}% {icon}",
+        "format": "{icon} {volume}%",
+        "format-bluetooth": " {icon} {volume}%",
         "format-muted": "󰝟",
         "format-icons": {
             "headphone": "",
@@ -576,40 +614,51 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
             "default": ["", ""]
         },
         "scroll-step": 1,
-        "on-click": "pavucontrol"
+        "on-click": "pavucontrol",
+        "tooltip": false
     },
     
     "network": {
-        "format-wifi": "{essid} ({signalStrength}%) ",
-        "format-ethernet": "{ipaddr}/{cidr} ",
-        "format-disconnected": "Disconnected ⚠",
+        "format-wifi": "  {signalStrength}%",
+        "format-ethernet": " {ipaddr}",
+        "format-disconnected": "󰤭",
+        "tooltip-format": "{essid}",
         "on-click": "nm-connection-editor"
     },
     
     "bluetooth": {
-        "format": " {status}",
-        "format-connected": " {device_alias}",
-        "format-disconnected": "",
+        "format": "",
+        "format-connected": " {num_connections}",
+        "format-disabled": "",
+        "tooltip-format": "{controller_alias}\t{controller_address}",
+        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
+        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
         "on-click": "blueman-manager"
     },
     
     "battery": {
-        "format": "{capacity}% {icon}",
-        "format-icons": ["", "", "", "", ""]
+        "format": "{icon} {capacity}%",
+        "format-icons": ["", "", "", "", ""],
+        "format-charging": " {capacity}%",
+        "states": {
+            "warning": 30,
+            "critical": 15
+        },
+        "tooltip": false
     },
     
     "custom/notification": {
         "tooltip": false,
         "format": "{icon}",
         "format-icons": {
-          "notification": "<span foreground='red'><sup></sup></span>",
-          "none": "",
-          "dnd-notification": "<span foreground='red'><sup></sup></span>",
-          "dnd-none": "",
-          "inhibited-notification": "<span foreground='red'><sup></sup></span>",
-          "inhibited-none": "",
-          "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-          "dnd-inhibited-none": ""
+          "notification": "<span foreground='#89b4fa'></span>",
+          "none": "<span foreground='#cdd6f4'></span>",
+          "dnd-notification": "<span foreground='#89b4fa'></span>",
+          "dnd-none": "<span foreground='#cdd6f4'></span>",
+          "inhibited-notification": "<span foreground='#89b4fa'></span>",
+          "inhibited-none": "<span foreground='#cdd6f4'></span>",
+          "dnd-inhibited-notification": "<span foreground='#89b4fa'></span>",
+          "dnd-inhibited-none": "<span foreground='#cdd6f4'></span>"
         },
         "return-type": "json",
         "exec-if": "which swaync-client",
@@ -620,115 +669,160 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     },
     
     "tray": {
-        "icon-size": 21,
-        "spacing": 10
+        "icon-size": 18,
+        "spacing": 8
     }
 }
 EOCONFIG
 
-# Create SwayNC configuration
-echo "🔔 Creating SwayNC configuration..."
-mkdir -p ~/.config/swaync
-cat > ~/.config/swaync/config.json << 'EOCONFIG'
-{
-  "$schema": "/etc/xdg/swaync/configSchema.json",
-  "positionX": "right",
-  "positionY": "top",
-  "control-center-margin-top": 10,
-  "control-center-margin-bottom": 10,
-  "control-center-margin-right": 10,
-  "control-center-margin-left": 0,
-  "notification-icon-size": 64,
-  "notification-body-image-height": 100,
-  "notification-body-image-width": 200,
-  "timeout": 10,
-  "timeout-low": 5,
-  "timeout-critical": 0,
-  "fit-to-screen": false,
-  "control-center-width": 500,
-  "control-center-height": 600,
-  "notification-window-width": 500,
-  "keyboard-shortcuts": true,
-  "image-visibility": "when-available",
-  "transition-time": 200,
-  "hide-on-clear": false,
-  "hide-on-action": true,
-  "script-fail-notify": true,
-  "widgets": [
-    "title",
-    "dnd",
-    "notifications"
-  ],
-  "widget-config": {
-    "title": {
-      "text": "Notifications",
-      "clear-all-button": true,
-      "button-text": "Clear All"
-    },
-    "dnd": {
-      "text": "Do Not Disturb"
-    },
-    "label": {
-      "max-lines": 5,
-      "text": "Label Text"
-    },
-    "mpris": {
-      "image-size": 96,
-      "image-radius": 12
-    }
-  }
-}
-EOCONFIG
-
-# Create style.css for SwayNC
-cat > ~/.config/swaync/style.css << 'EOCONFIG'
+# Create Waybar style.css
+cat > ~/.config/waybar/style.css << 'EOCONFIG'
 * {
-  all: unset;
-  font-family: "Roboto", "Inter", "Font Awesome 6 Free";
-  font-size: 14px;
+    border: none;
+    border-radius: 0;
+    font-family: "Inter", "Font Awesome 6 Free";
+    font-size: 13px;
+    min-height: 0;
 }
 
-.control-center {
-  background: rgba(43, 48, 59, 0.95);
-  border-radius: 10px;
-  border: 2px solid rgba(33, 128, 255, 0.7);
-  color: #cdd6f4;
-  padding: 8px;
+window#waybar {
+    background: rgba(30, 30, 46, 0.85);
+    border-radius: 15px;
+    color: #cdd6f4;
+    transition-property: background-color;
+    transition-duration: .5s;
 }
 
-.control-center-list {
-  background: transparent;
+window#waybar.hidden {
+    opacity: 0.2;
 }
 
-.notification {
-  background: rgba(30, 30, 46, 0.9);
-  border-radius: 10px;
-  margin: 6px 0;
-  padding: 0;
+#workspaces {
+    background: #1e1e2e;
+    border-radius: 15px;
+    margin: 5px;
+    padding: 0 5px;
 }
 
-.notification-content {
-  background: transparent;
-  padding: 10px;
-  min-width: 300px;
+#workspaces button {
+    padding: 0 5px;
+    min-width: 20px;
+    color: #cdd6f4;
 }
 
-.notification-default-action {
-  padding: 4px;
-  margin: 0;
+#workspaces button.active {
+    color: #89b4fa;
+    border-radius: 15px;
+    background: #313244;
 }
 
-.close-button {
-  background: rgba(180, 190, 254, 0.1);
-  border-radius: 100%;
-  margin: 10px;
-  padding: 2px;
-  color: #cdd6f4;
+#workspaces button:hover {
+    background: #313244;
+    border-radius: 15px;
+    color: #cdd6f4;
 }
 
-.close-button:hover {
-  background: rgba(243, 139, 168, 0.3);
-  color: #fff;
+#custom-separator {
+    color: #313244;
+    margin: 0 5px;
+    font-size: 18px;
+}
+
+#window {
+    margin: 0 4px;
+    border-radius: 15px;
+    color: #cdd6f4;
+}
+
+#clock,
+#battery,
+#pulseaudio,
+#network,
+#bluetooth,
+#custom-notification {
+    background: #1e1e2e;
+    padding: 0 10px;
+    margin: 5px 0;
+    border-radius: 15px;
+    color: #cdd6f4;
+}
+
+#clock {
+    color: #89b4fa;
+}
+
+#battery {
+    color: #a6e3a1;
+}
+
+#battery.charging, #battery.plugged {
+    color: #89b4fa;
+}
+
+#battery.critical:not(.charging) {
+    color: #f38ba8;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to {
+        background-color: #f38ba8;
+        color: #1e1e2e;
+    }
+}
+
+#pulseaudio {
+    color: #fab387;
+}
+
+#pulseaudio.muted {
+    color: #f38ba8;
+}
+
+#network {
+    color: #94e2d5;
+}
+
+#network.disconnected {
+    color: #f38ba8;
+}
+
+#bluetooth {
+    color: #89b4fa;
+}
+
+#bluetooth.disabled {
+    color: #6c7086;
+}
+
+#tray {
+    background: #1e1e2e;
+    margin: 5px 0;
+    border-radius: 15px;
+    padding: 0 10px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #f38ba8;
+}
+
+tooltip {
+    background: rgba(30, 30, 46, 0.95);
+    border: 1px solid rgba(137, 180, 250, 0.3);
+    border-radius: 10px;
+}
+
+tooltip label {
+    color: #cdd6f4;
 }
 EOCONFIG
 
