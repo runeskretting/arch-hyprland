@@ -323,28 +323,57 @@ bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
 
 # Window rules
-windowrulev2 = float,class:^(pavucontrol)$
-windowrulev2 = float,class:^(nm-connection-editor)$
-windowrulev2 = float,class:^(blueman-manager)$
-windowrulev2 = float,title:^(btop)$
-windowrulev2 = float,title:^(htop)$
+windowrule = float,^(pavucontrol)$
+windowrule = float,^(nm-connection-editor)$
+windowrule = float,^(blueman-manager)$
+windowrule = float,^(btop)$
+windowrule = float,^(htop)$
+windowrule = move 0 0,title:^(flameshot)$
+windowrule = suppressevent fullscreen,title:^(flameshot)$
+windowrule = noblur,^(flameshot)$
+windowrule = noborder,^(flameshot)$
+windowrule = noanim,^(flameshot)$
+windowrule = rounding 0,^(flameshot)$
+windowrule = nofocus,^(flameshot)$
+windowrule = allowsinput,^(flameshot)$
+windowrule = dimaround,^(flameshot)$
+windowrule = keepaspectratio,^(flameshot)$
 
 # Font configuration
 misc {
     force_default_wallpaper = -1
-    disable_hyprland_logo = false
+    disable_hyprland_logo = true
     mouse_move_enables_dpms = true
     key_press_enables_dpms = true
     animate_manual_resizes = true
     animate_mouse_windowdragging = true
     enable_swallow = true
     swallow_regex = ^(ghostty)$
+    middle_click_paste = false
+    vfr = true
+    no_direct_scanout = true
+    focus_on_activate = true
+    new_window_takes_over_fullscreen = 0
+    disable_splash_rendering = true
+    force_hypr_chan = false
+    no_vfr = false
+    mouse_move_focuses_monitor = true
+    key_press_focuses_monitor = true
+    render_ahead_of_time = true
+    render_ahead_safezone = 1
+    cursor_zoom_factor = 1.0
+    cursor_zoom_rigid = false
 }
 
 # Window rules for fonts and scaling
-windowrulev2 = font-family:Inter,class:.*
-windowrulev2 = xwayland:1,class:.*
-windowrulev2 = rounding:0,class:^(xwayland.*)$
+windowrule = font-family:Inter,class:.*
+windowrule = xwayland:1,class:.*
+windowrule = rounding:0,class:^(xwayland.*)$
+windowrule = noanim,class:^(xwayland.*)$
+windowrule = noblur,class:^(xwayland.*)$
+windowrule = allowsinput,class:^(xwayland.*)$
+windowrule = nearestneighbor,class:^(xwayland.*)$
+windowrule = nomaxsize,class:^(xwayland.*)$
 
 # Create Hyprlock config
 echo "🔒 Creating Hyprlock configuration..."
@@ -544,31 +573,87 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     "hyprland/workspaces": {
         "format": "{icon}",
         "format-icons": {
-            "1": "1",
-            "2": "2",
-            "3": "3",
-            "4": "4",
-            "5": "5",
-            "urgent": "",
-            "active": "",
-            "default": ""
+            "1": "󰎤",
+            "2": "󰎧",
+            "3": "󰎪",
+            "4": "󰎭",
+            "5": "󰎰",
+            "urgent": "󱨇",
+            "active": "",
+            "default": "",
+            "empty": "󱓼"
         },
+        "window-rewrite": {
+            "class<.*nvim.*>": "",
+            "class<(Chromium)|(Chrome)>": "",
+            "class<.*firefox.*>": "",
+            "class<.*terminal.*>": "",
+            "class<.*dolphin.*>": "",
+            "class<.*obsidian.*>": "",
+            "class<.*steam.*>": "",
+            "class<.*discord.*>": "",
+            "class<.*spotify.*>": "",
+            "class<.*telegram.*>": "",
+            "class<.*thunderbird.*>": "",
+            "class<.*gimp.*>": "",
+            "class<.*libreoffice.*>": ""
+        },
+        "window-rewrite-default": "",
+        "window-rewrite-separator": " ",
         "on-click": "activate",
         "sort-by-number": true,
         "on-scroll-up": "hyprctl dispatch workspace e+1",
-        "on-scroll-down": "hyprctl dispatch workspace e-1"
+        "on-scroll-down": "hyprctl dispatch workspace e-1",
+        "show-special": true,
+        "format-window-separator": " ",
+        "disable-click": false,
+        "all-outputs": true,
+        "persistent_workspaces": {
+            "1": "eDP-1",
+            "2": "eDP-1",
+            "3": "eDP-1",
+            "4": "eDP-1",
+            "5": "eDP-1"
+        }
     },
 
-    "custom/separator": {
-        "format": "|",
-        "interval": "once",
-        "tooltip": false
-    },
-    
     "hyprland/window": {
-        "format": "{}",
+        "format": "{icon} {title}",
+        "format-icons": {
+            "class<.*nvim.*>": "",
+            "class<(Chromium)|(Chrome)>": "",
+            "class<.*firefox.*>": "",
+            "class<.*terminal.*>": "",
+            "class<.*dolphin.*>": "",
+            "class<.*obsidian.*>": "",
+            "class<.*steam.*>": "",
+            "class<.*discord.*>": "",
+            "class<.*spotify.*>": "",
+            "class<.*telegram.*>": "",
+            "class<.*thunderbird.*>": "",
+            "class<.*gimp.*>": "",
+            "class<.*libreoffice.*>": ""
+        },
         "max-length": 50,
-        "separate-outputs": true
+        "separate-outputs": true,
+        "rewrite": {
+            "class<.*nvim.*>": "",
+            "class<(Chromium)|(Chrome)>": "",
+            "class<.*firefox.*>": "",
+            "class<.*terminal.*>": "",
+            "class<.*dolphin.*>": "",
+            "class<.*obsidian.*>": "",
+            "class<.*steam.*>": "",
+            "class<.*discord.*>": "",
+            "class<.*spotify.*>": "",
+            "class<.*telegram.*>": "",
+            "class<.*thunderbird.*>": "",
+            "class<.*gimp.*>": "",
+            "class<.*libreoffice.*>": ""
+        },
+        "tooltip": true,
+        "tooltip-format": "{title}",
+        "escape": true
     },
     
     "clock": {
