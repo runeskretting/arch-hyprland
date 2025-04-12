@@ -182,11 +182,7 @@ decoration {
     rounding_power = 2
     active_opacity = 1.0
     inactive_opacity = 1.0
-    drop_shadow = true
-    shadow_range = 4
-    shadow_render_power = 3
-    shadow_ignore_window = true
-    col.shadow = rgba(1a1a1aee)
+
     blur {
         enabled = true
         size = 3
@@ -194,6 +190,11 @@ decoration {
         new_optimizations = true
         vibrancy = 0.1696
     }
+
+    drop_shadow = yes
+    shadow_range = 4
+    shadow_render_power = 3
+    col.shadow = rgba(1a1a1aee)
 }
 
 # Set the font for window titles
