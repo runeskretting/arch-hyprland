@@ -169,7 +169,7 @@ env = QT_FONT_DPI,96
 
 # XWayland settings
 xwayland {
-    use_nearest_neighbor = false
+    use_nearest_neighbor = true
     force_zero_scaling = true
 }
 
@@ -181,11 +181,12 @@ general {
     gaps_in = 5
     gaps_out = 20
     border_size = 2
-    col.active_border = rgba(33ccffee) rgba(00ff99ee) 45deg
+    col.active_border = rgba(33ccffee)
     col.inactive_border = rgba(595959aa)
     resize_on_border = false
     allow_tearing = false
     layout = dwindle
+    no_focus_fallback = true
 }
 
 decoration {
@@ -195,7 +196,7 @@ decoration {
     inactive_opacity = 1.0
     
     blur {
-        enabled = true
+        enabled = false
         size = 3
         passes = 1
         new_optimizations = true
@@ -213,10 +214,10 @@ animations {
     bezier = easeInOutCubic,0.65,0.05,0.36,1
     bezier = linear,0,0,1,1
     
-    animation = windows, 1, 3, easeInOutCubic, slide
+    animation = windows, 1, 4, default
     animation = border, 1, 10, default
-    animation = fade, 1, 3, easeInOutCubic
-    animation = workspaces, 1, 3, easeInOutCubic, slide
+    animation = fade, 1, 4, default
+    animation = workspaces, 1, 4, default
 }
 
 #############
@@ -323,21 +324,26 @@ bindl = , XF86AudioPlay, exec, playerctl play-pause
 bindl = , XF86AudioPrev, exec, playerctl previous
 
 # Window rules
-windowrule = float,^(pavucontrol)$
-windowrule = float,^(nm-connection-editor)$
-windowrule = float,^(blueman-manager)$
-windowrule = float,^(btop)$
-windowrule = float,^(htop)$
-windowrule = move 0 0,title:^(flameshot)$
-windowrule = suppressevent fullscreen,title:^(flameshot)$
-windowrule = noblur,^(flameshot)$
-windowrule = noborder,^(flameshot)$
-windowrule = noanim,^(flameshot)$
-windowrule = rounding 0,^(flameshot)$
-windowrule = nofocus,^(flameshot)$
-windowrule = allowsinput,^(flameshot)$
-windowrule = dimaround,^(flameshot)$
-windowrule = keepaspectratio,^(flameshot)$
+windowrulev2 = float,class:(pavucontrol)
+windowrulev2 = float,class:(nm-connection-editor)
+windowrulev2 = float,class:(blueman-manager)
+windowrulev2 = float,class:(btop)
+windowrulev2 = float,class:(htop)
+windowrulev2 = move 0 0,title:(flameshot)
+windowrulev2 = suppressevent fullscreen,title:(flameshot)
+windowrulev2 = noblur,class:(flameshot)
+windowrulev2 = noborder,class:(flameshot)
+windowrulev2 = noanim,class:(flameshot)
+windowrulev2 = rounding 0,class:(flameshot)
+windowrulev2 = nofocus,class:(flameshot)
+windowrulev2 = dimaround,class:(flameshot)
+windowrulev2 = keepaspectratio,class:(flameshot)
+
+# XWayland specific rules
+windowrulev2 = rounding 0,xwayland:1
+windowrulev2 = noanim,xwayland:1
+windowrulev2 = noblur,xwayland:1
+windowrulev2 = noshadow,xwayland:1
 
 # Font configuration
 misc {
@@ -345,44 +351,44 @@ misc {
     disable_hyprland_logo = true
     mouse_move_enables_dpms = true
     key_press_enables_dpms = true
-    animate_manual_resizes = true
-    animate_mouse_windowdragging = true
+    animate_manual_resizes = false
+    animate_mouse_windowdragging = false
     enable_swallow = true
     swallow_regex = ^(ghostty)$
-    middle_click_paste = false
-    vfr = true
-    no_direct_scanout = true
     focus_on_activate = true
     new_window_takes_over_fullscreen = 0
     disable_splash_rendering = true
-    force_hypr_chan = false
-    no_vfr = false
     mouse_move_focuses_monitor = true
-    key_press_focuses_monitor = true
-    render_ahead_of_time = true
     render_ahead_safezone = 1
-    cursor_zoom_factor = 1.0
-    cursor_zoom_rigid = false
 }
 
 # Window rules for fonts and scaling
-windowrule = font-family:Inter,class:.*
-windowrule = xwayland:1,class:.*
-windowrule = rounding:0,class:^(xwayland.*)$
-windowrule = noanim,class:^(xwayland.*)$
-windowrule = noblur,class:^(xwayland.*)$
-windowrule = allowsinput,class:^(xwayland.*)$
-windowrule = nearestneighbor,class:^(xwayland.*)$
-windowrule = nomaxsize,class:^(xwayland.*)$
+windowrulev2 = immediate,class:.*
+windowrulev2 = rounding 0,class:^(xwayland.*)$
+windowrulev2 = noanim,class:^(xwayland.*)$
+windowrulev2 = noblur,class:^(xwayland.*)$
+windowrulev2 = noshadow,class:^(xwayland.*)$
 
 # Create Hyprlock config
 echo "🔒 Creating Hyprlock configuration..."
 cat > ~/.config/hypr/hyprlock.conf << 'EOCONFIG'
+general {
+    disable_loading_bar = false
+    hide_cursor = true
+    grace = 0
+    no_fade_in = false
+}
+
 background {
-    monitor =
-    path = screenshot
-    blur_size = 4
+    monitor = 
+    source = screenshot
     blur_passes = 3
+    blur_size = 7
+    noise = 0.0117
+    contrast = 0.8916
+    brightness = 0.8172
+    vibrancy = 0.1696
+    vibrancy_darkness = 0.0
 }
 
 input-field {
@@ -415,7 +421,7 @@ EOCONFIG
 echo "🖼️ Creating hyprpaper configuration..."
 cat > ~/.config/hypr/hyprpaper.conf << 'EOCONFIG'
 preload = ~/.config/hypr/wallpaper.jpg
-wallpaper = eDP-1,~/.config/hypr/wallpaper.jpg
+wallpaper = ,~/.config/hypr/wallpaper.jpg
 ipc = off
 EOCONFIG
 
