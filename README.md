@@ -48,7 +48,7 @@ If you prefer to run modules individually:
 1. Clone this repository:
    ```bash
    git clone https://github.com/runeskretting/arch-hyprland.git
-   cd arch-hyprland-setup
+   cd arch-hyprland
    ```
 
 2. Make scripts executable:
