@@ -26,7 +26,7 @@ The setup is organized into several modules:
 
 1. Download the master installation script:
    ```bash
-   curl -O https://github.com/runeskretting/arch-hyprland/install-master.sh
+   curl -O https://github.com/runeskretting/arch-hyprland/blob/main/install-master.sh
    ```
 
 2. Make it executable:
