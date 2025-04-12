@@ -202,10 +202,8 @@ decoration {
         vibrancy = 0.1696
     }
 
-    drop_shadow = yes
-    shadow_range = 4
-    shadow_render_power = 3
-    col.shadow = rgba(1a1a1aee)
+    dim_inactive = false
+    dim_strength = 0.1
 }
 
 animations {
@@ -335,7 +333,6 @@ windowrulev2 = float,title:^(htop)$
 misc {
     force_default_wallpaper = -1
     disable_hyprland_logo = false
-    force_default_font = false
     mouse_move_enables_dpms = true
     key_press_enables_dpms = true
     animate_manual_resizes = true
