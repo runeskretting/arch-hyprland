@@ -98,7 +98,7 @@ install_packages "Terminal and file manager" "ghostty dolphin"
 install_packages "Text editors" "neovim kate"
 install_packages "Document viewer" "okular"
 install_packages "Waybar and application launcher" "waybar wofi"
-install_packages "Font Awesome (for icons)" "ttf-font-awesome inter-font"
+install_packages "Font Awesome (for icons)" "ttf-font-awesome ttf-font-awesome-5 ttf-font-awesome-4 inter-font"
 install_packages "Screenshot and clipboard utilities" "grim slurp wl-clipboard libnotify"
 install_packages "Color picker" "hyprpicker"
 install_packages "Wallpaper, idle, and key event test" "hyprpaper wev"
@@ -601,17 +601,17 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     },
     
     "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-bluetooth": " {icon} {volume}%",
-        "format-muted": "󰝟",
+        "format": "󰕾 {volume}%",
+        "format-bluetooth": "󰂯 {volume}%",
+        "format-muted": "󰖁",
         "format-icons": {
-            "headphone": "",
-            "hands-free": "",
-            "headset": "",
-            "phone": "",
-            "portable": "",
-            "car": "",
-            "default": ["", ""]
+            "headphone": "󰋋",
+            "hands-free": "󰋎",
+            "headset": "󰋎",
+            "phone": "󰏲",
+            "portable": "󰄜",
+            "car": "󰄋",
+            "default": ["󰕿", "󰖀", "󰕾"]
         },
         "scroll-step": 1,
         "on-click": "pavucontrol",
@@ -619,17 +619,17 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     },
     
     "network": {
-        "format-wifi": "  {signalStrength}%",
-        "format-ethernet": " {ipaddr}",
+        "format-wifi": "󰤨 {signalStrength}%",
+        "format-ethernet": "󰈀 {ipaddr}",
         "format-disconnected": "󰤭",
         "tooltip-format": "{essid}",
         "on-click": "nm-connection-editor"
     },
     
     "bluetooth": {
-        "format": "",
-        "format-connected": " {num_connections}",
-        "format-disabled": "",
+        "format": "󰂯",
+        "format-connected": "󰂱 {num_connections}",
+        "format-disabled": "󰂲",
         "tooltip-format": "{controller_alias}\t{controller_address}",
         "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
         "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
@@ -638,8 +638,8 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
     
     "battery": {
         "format": "{icon} {capacity}%",
-        "format-icons": ["", "", "", "", ""],
-        "format-charging": " {capacity}%",
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "format-charging": "󰂄 {capacity}%",
         "states": {
             "warning": 30,
             "critical": 15
@@ -675,14 +675,14 @@ cat > ~/.config/waybar/config.jsonc << 'EOCONFIG'
 
     "custom/cpu": {
         "exec": "top -bn1 | grep 'Cpu(s)' | awk '{print int($2 + $4)}' | tr -d '\n'",
-        "format": " {}%",
+        "format": "󰻠 {}%",
         "interval": 2,
         "tooltip": false
     },
 
     "custom/memory": {
         "exec": "free -m | grep Mem | awk '{printf \"%.1f\", ($3/$2)*100}'",
-        "format": " {}%",
+        "format": "󰍛 {}%",
         "interval": 2,
         "tooltip": false
     },
@@ -701,7 +701,7 @@ cat > ~/.config/waybar/style.css << 'EOCONFIG'
 * {
     border: none;
     border-radius: 0;
-    font-family: "Inter", "Font Awesome 6 Free";
+    font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands", "Inter";
     font-size: 13px;
     min-height: 0;
 }
