@@ -31,9 +31,22 @@ install_module() {
         # Special handling for Hyprland module
         if [ "$module" = "02-hyprland" ]; then
             echo "🚀 Installing Hyprland..."
+            
+            # Install regular packages first
             echo "📦 Installing Hyprland and display packages..."
-            sudo pacman -S --noconfirm "${HYPRLAND_PACKAGES[@]}"
+            # Remove hyprshot from the array temporarily
+            local regular_packages=("${HYPRLAND_PACKAGES[@]}")
+            for i in "${!regular_packages[@]}"; do
+                if [[ "${regular_packages[$i]}" == "hyprshot" ]]; then
+                    unset 'regular_packages[$i]'
+                fi
+            done
+            sudo pacman -S --noconfirm "${regular_packages[@]}"
             check_status "Hyprland packages installation"
+
+            # Install AUR packages
+            echo "📦 Installing AUR packages..."
+            yay -S --noconfirm hyprshot || echo "⚠️ Warning: Could not install hyprshot from AUR"
 
             # Create and copy Hyprland configuration
             echo "📋 Setting up Hyprland configuration..."
