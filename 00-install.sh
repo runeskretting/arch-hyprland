@@ -13,6 +13,7 @@ SCRIPTS_DIR="$(dirname "$0")/scripts"
 
 # Source common functions
 source "$SCRIPTS_DIR/common.sh"
+source "$(dirname "$0")/packages.conf"
 
 # Function to check if a module exists
 module_exists() {
@@ -27,8 +28,32 @@ install_module() {
         "$MODULES_DIR/$module/install.sh"
         check_status "$module installation"
     else
-        echo "❌ Module $module not found"
-        exit 1
+        # Special handling for Hyprland module
+        if [ "$module" = "02-hyprland" ]; then
+            echo "🚀 Installing Hyprland..."
+            echo "📦 Installing Hyprland and display packages..."
+            sudo pacman -S --noconfirm "${HYPRLAND_PACKAGES[@]}"
+            check_status "Hyprland packages installation"
+
+            # Create and copy Hyprland configuration
+            echo "📋 Setting up Hyprland configuration..."
+            ensure_dir "$HOME/.config/hypr"
+            cp -r "$MODULES_DIR/02-hyprland/config/hypr/"* "$HOME/.config/hypr/"
+            check_status "Hyprland configuration copy"
+
+            # Create and copy Waybar configuration
+            echo "📋 Setting up Waybar configuration..."
+            ensure_dir "$HOME/.config/waybar"
+            cp -r "$MODULES_DIR/02-hyprland/config/waybar/"* "$HOME/.config/waybar/"
+            check_status "Waybar configuration copy"
+
+            echo "===================================="
+            echo "✅ Hyprland Setup completed successfully!"
+            echo "===================================="
+        else
+            echo "❌ Module $module not found"
+            exit 1
+        fi
     fi
 }
 
