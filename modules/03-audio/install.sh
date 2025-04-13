@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Audio Module Installation
-# This script installs audio and brightness control utilities
+# This script installs audio components
 
 # Exit on error
 set -e
@@ -9,20 +9,20 @@ set -e
 # Source common functions
 source "$(dirname "$0")/../../scripts/common.sh"
 
+# Source package configuration
+source "$(dirname "$0")/../../packages.conf"
+
 echo "🚀 Starting Audio Setup..."
 
-# Install audio and brightness control
-install_packages "PipeWire audio" "pipewire pipewire-pulse wireplumber"
-install_packages "Audio volume control" "pavucontrol"
-install_packages "Brightness control" "brightnessctl"
-install_packages "Media control" "playerctl"
+# Install audio packages
+echo "📦 Installing audio packages..."
+sudo pacman -S --noconfirm "${AUDIO_PACKAGES[@]}"
+check_status "Audio packages installation"
 
-# Enable PipeWire services
-echo "🔊 Enabling PipeWire services..."
-systemctl --user enable --now pipewire.socket
-systemctl --user enable --now pipewire-pulse.socket
-systemctl --user start pipewire.service pipewire-pulse.service
-check_status "PipeWire services setup"
+# Enable and start PipeWire services
+echo "🔊 Enabling audio services..."
+systemctl --user enable --now pipewire pipewire-pulse wireplumber
+check_status "Audio services setup"
 
 echo "===================================="
 echo "✅ Audio Setup completed successfully!"

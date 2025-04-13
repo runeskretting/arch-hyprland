@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Development Module Installation
-# This script installs development tools and configures NeoVim
+# Development Tools Module Installation
+# This script installs development tools and configurations
 
 # Exit on error
 set -e
@@ -9,25 +9,22 @@ set -e
 # Source common functions
 source "$(dirname "$0")/../../scripts/common.sh"
 
-echo "🚀 Starting Development Environment Setup..."
+# Source package configuration
+source "$(dirname "$0")/../../packages.conf"
 
-# Install productivity apps
-install_packages "Productivity applications" "obsidian"
+echo "🚀 Starting Development Tools Setup..."
 
-# Install development tools (Node.js)
-install_packages "Node.js" "nodejs-lts-jod npm"
+# Install development packages
+echo "📦 Installing development packages..."
+sudo pacman -S --noconfirm "${DEV_PACKAGES[@]}"
+check_status "Development packages installation"
 
-# Setup LazyVim (NeoVim configuration)
-echo "📝 Setting up LazyVim for NeoVim..."
-backup_config "$HOME/.config/nvim"
-backup_config "$HOME/.local/share/nvim"
-backup_config "$HOME/.local/state/nvim"
-backup_config "$HOME/.cache/nvim"
-
-git clone https://github.com/LazyVim/starter "$HOME/.config/nvim"
-rm -rf "$HOME/.config/nvim/.git"
-check_status "LazyVim setup"
+# Setup NeoVim configuration
+echo "📋 Setting up NeoVim configuration..."
+ensure_dir "$HOME/.config/nvim"
+cp "$(dirname "$0")/config/init.lua" "$HOME/.config/nvim/"
+check_status "NeoVim configuration setup"
 
 echo "===================================="
-echo "✅ Development Environment Setup completed successfully!"
+echo "✅ Development Tools Setup completed successfully!"
 echo "====================================" 

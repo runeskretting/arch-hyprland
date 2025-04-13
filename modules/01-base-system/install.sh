@@ -9,6 +9,9 @@ set -e
 # Source common functions
 source "$(dirname "$0")/../../scripts/common.sh"
 
+# Source package configuration
+source "$(dirname "$0")/../../packages.conf"
+
 echo "🚀 Starting Base System Setup..."
 
 # Update system
@@ -25,7 +28,9 @@ check_status "XDG user directories setup"
 ensure_dir "$HOME/Scripts"
 
 # Install basic utilities
-install_packages "Basic utilities" "git curl tar unzip wget fd ripgrep fzf jq"
+echo "📦 Installing base system packages..."
+sudo pacman -S --noconfirm "${BASE_PACKAGES[@]}"
+check_status "Base packages installation"
 
 echo "===================================="
 echo "✅ Base System Setup completed successfully!"
