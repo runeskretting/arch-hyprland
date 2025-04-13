@@ -24,8 +24,16 @@ ensure_dir "$HOME/.config/hypr"
 
 # Copy Hyprland configuration
 echo "📋 Copying Hyprland configuration..."
-cp "$(dirname "$0")/config/hyprland.conf" "$HOME/.config/hypr/"
+cp -r "$(dirname "$0")/config/hypr/"* "$HOME/.config/hypr/"
 check_status "Hyprland configuration copy"
+
+# Create Waybar config directory
+ensure_dir "$HOME/.config/waybar"
+
+# Copy Waybar configuration
+echo "📋 Copying Waybar configuration..."
+cp -r "$(dirname "$0")/config/waybar/"* "$HOME/.config/waybar/"
+check_status "Waybar configuration copy"
 
 echo "===================================="
 echo "✅ Hyprland Setup completed successfully!"
